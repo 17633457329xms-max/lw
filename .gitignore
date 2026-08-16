@@ -1,0 +1,16 @@
+# Office 临时锁文件（打开文档时生成）
+~$*
+*.~lock.*
+
+# 系统/编辑器临时文件
+Thumbs.db
+.DS_Store
+*.tmp
+*.bak
+
+# 空占位文件（0字节，无内容）
+ppt.pptx
+
+# Python 运行缓存（如有）
+__pycache__/
+*.pyc
