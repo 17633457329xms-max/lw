@@ -92,18 +92,18 @@ def set_cell_border(cell, is_header=False):
     tcPr.append(tcBorders)
 
 
-def add_heading_custom(text, level=1, font_name='黑体', size=None):
+def add_heading_custom(text, level=1, font_name='黑体', size=None, line_spacing=20):
     """添加自定义标题，遵循经管类毕业论文格式要求：
     level 0（独立页标题，如摘要/目录/致谢）：黑体小2号居中，段前30磅段后18磅，行距固定20磅
     level 1（一级标题）：黑体小2号(18pt)居中，段前30磅段后18磅，行距固定20磅
     level 2（二级标题）：黑体3号(16pt)左对齐，缩进2字符，段前18磅段后18磅，行距固定20磅
     level 3（三级标题）：黑体小3号(15pt)左对齐，缩进2字符，段前15磅段后15磅，行距固定20磅
     level 4（四级标题）：黑体小4号(12pt)左对齐，缩进2字符，段前6磅段后6磅，行距固定20磅
-    size 参数可覆盖默认字号（如摘要标题需4号黑体）"""
+    size 参数可覆盖默认字号（如摘要标题需4号黑体）；line_spacing 可覆盖行距磅值（如摘要标题需24磅）"""
     p = doc.add_paragraph()
     pf = p.paragraph_format
     pf.line_spacing_rule = WD_LINE_SPACING.EXACTLY
-    pf.line_spacing = Pt(20)
+    pf.line_spacing = Pt(line_spacing)
     if level == 0:
         p.alignment = WD_ALIGN_PARAGRAPH.CENTER
         run_size = size if size else Pt(18)  # 默认小2号
@@ -833,7 +833,7 @@ r_sub.bold = True
 r_sub.element.rPr.rFonts.set(qn('w:eastAsia'), '黑体')
 
 # "中文摘要"：居中，4号黑体，行距24磅
-add_heading_custom('中文摘要', level=0, size=Pt(14))
+add_heading_custom('中文摘要', level=0, size=Pt(14), line_spacing=24)
 
 add_body_paragraph(
     '数字经济浪潮下，数字化转型已成为企业获取竞争优势的关键战略选择。资本结构作为企业财务决策的核心维度，'
@@ -1011,9 +1011,8 @@ for item in toc_items:
     run.font.size = Pt(12)
     run.element.rPr.rFonts.set(qn('w:eastAsia'), '宋体')
 
-add_page_break()
-
 # 分节：正文节从第一章开始，页码从1起，页底居中（格式要求：页码从引言开始按阿拉伯数字连续编排）
+# 注意：分节符(NEW_PAGE)本身即另起一页，无需再 add_page_break，避免多余空白页
 new_section = doc.add_section(WD_SECTION_START.NEW_PAGE)
 # 正文节的页边距与前置部分一致
 new_section.top_margin = Cm(2.54)
